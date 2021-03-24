@@ -1,0 +1,17 @@
+<!--
+    - Apertar F12 para abrir o modo de desenvolvedor no browser
+    - Na aba Console digitar
+        - model.products.shift()
+            - comando que exclui o primeiro produto e retorna este mesmo produto
+        - appRef.tick()
+            - comando que processa as mudancas como atualização
+-->
+
+<div class="text-white m-2">
+    <div class="getClassesByPosition(0)">
+        O primeiro produto é {{ getProductByPosition(0).name }}
+    </div>
+    <div class="getClassesByPosition(1)">
+        O primeiro produto é {{ getProductByPosition(1).name }}
+    </div>
+</div>
