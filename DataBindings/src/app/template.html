@@ -1,3 +1,111 @@
-<div class="bg-info text-white p-2">
-    There are {{ model.getProducts().length }}
+<!--
+    Data Binding
+-->
+
+<!--
+    1.1 Standard Property Binding
+-->
+<div class="form-group">
+    <label>Name</label>
+    <input class="form-control" [value]="model.getProduct(1)?.name || 'None'" />
+</div>
+
+<!--
+    1.2 Interpolation String
+    -->
+<div class="text-white m-2 p-2 bg-warning">
+    Name: {{ model.getProduct(1)?.name || 'None' }}
+</div>
+
+<!--
+    2.1 Attribute Binding
+-->
+<table class="table table-bordered table-striped mt-2 table-sm">
+    <tr>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>5</th>
+    </tr>
+    <tr>
+        <td [attr.colSpan]="model.getProducts().length">
+            {{ model.getProduct(1).name || 'None' }}
+        </td>
+    </tr>
+</table>
+
+<!--
+    Class Binding
+-->
+
+<!--
+    3.1 Standard Property Binding
+-->
+<div class="text-white p-2">
+    <div [class]="getClasses(1)">
+        O primeiro produto é {{ model.getProduct(1).name }}
+    </div>
+</div>
+<div class="text-white p-2">
+    <div [class]="getClasses(2)">
+        O segundo produto é {{ model.getProduct(2).name }}
+    </div>
+</div>
+
+<!--
+    3.2 Special Class Binding
+-->
+<div class="p-2" [class.bg-danger]="model.getProduct(2).price < 50" [class.bg-warning]="model.getProduct(2).price >= 50">
+    O segundo produto é {{ model.getProduct(2).name }}
+</div>
+
+<!--
+    3.3 ngClass Directive
+-->
+<div class="text-white m-2">
+    <div class="p-2" [ngClass]="getClassesMap(1)">
+        O primeiro produto é {{ model.getProduct(1).name }}
+    </div>
+    <div class="p-2" [ngClass]="getClassesMap(2)">
+        O segundo produto é {{ model.getProduct(2).name }}
+    </div>
+    <div class="p-2" [ngClass]="{'bg-success': model.getProduct(3).price < 50, 'bg-info': model.getProduct(3).price >= 50}">
+        O terceiro produto é {{ model.getProduct(3).name }}
+    </div>
+</div>
+
+<!--
+    Style Binding
+-->
+<!--
+    4.1 Standard Property Binding
+-->
+<div class="text-white m-2">
+    <div class="p-2 bg-warning">
+        O <span [style.fontSize]="fontSizeWithUnits">primeiro</span> produto é {{ model.getProduct(1).name }}
+    </div>
+</div>
+
+<!--
+    4.2 Special Style Binding
+-->
+<div class="text-white m-2">
+    <div class="p-2 bg-info">
+        O  <span [style.fontSize.px]="fontSizeWithoutUnits">segundo</span> produto é {{ model.getProduct(2).name }}
+    </div>
+</div>
+
+<!--
+    4.3 ngStyle Directive
+-->
+<div class="text-white m-2">
+    <div class="p-2 bg-warning">
+        O <span [ngStyle]="getStylesMap(1)">primeiro</span> produto é {{ model.getProduct(1).name }}
+    </div>
+</div>
+<div class="p-2 bg-info">
+    <div class="p-2 bg-info">
+        O <span [ngStyle]="getStylesMap(2)">segundo</span> produto é {{ model.getProduct(2).name }}
+    </div>
 </div>
