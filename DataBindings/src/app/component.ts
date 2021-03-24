@@ -12,7 +12,8 @@ export class ProductComponent {
     
     // cria o objeto Model que é o repositorio para poder acessar variaveis e/ou metodos
     model = new Model();
-    
+    targetName: string = "Kayak";
+
     constructor(ref: ApplicationRef) {
         (<any>window).appRef = ref;
         (<any>window).model = this.model;

@@ -8,10 +8,10 @@
 -->
 
 <div class="text-white m-2">
-    <div class="getClassesByPosition(0)">
+    <div [ngClass]="getClassesByPosition(0)">
         O primeiro produto é {{ getProductByPosition(0).name }}
     </div>
-    <div class="getClassesByPosition(1)">
+    <div [ngClass]="getClassesByPosition(1)">
         O primeiro produto é {{ getProductByPosition(1).name }}
     </div>
 </div>
