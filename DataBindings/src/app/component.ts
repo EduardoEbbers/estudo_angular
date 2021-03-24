@@ -1,16 +1,33 @@
+import { Product } from './product.model';
 import { Model } from './repository.model';
-import { Component } from '@angular/core';
+import { ApplicationRef, Component } from '@angular/core';
 
 @Component({
     // selector é o nome que forma a tag <app></app>
     // templateUrl é o caminho em que esta o template.html
     selector: "app",
-    templateUrl: "./template.html"
+    templateUrl: "./template1.html"
 })
 export class ProductComponent {
+    
     // cria o objeto Model que é o repositorio para poder acessar variaveis e/ou metodos
     model = new Model();
+    
+    constructor(ref: ApplicationRef) {
+        (<any>window).appRef = ref;
+        (<any>window).model = this.model;
+    }
 
+    getProductByPosition(position: number): Product {
+        return this.model.getProducts()[position];
+    }
+
+    getClassesByPosition(position: number): string {
+        let product = this.getProductByPosition(position);
+        return "p-2 " + (product.price < 50 ? "bg-info" : "bg-warning");
+    }
+
+    /*
     fontSizeWithUnits: string = "30px";
     fontSizeWithoutUnits: string = "30";
 
@@ -40,4 +57,5 @@ export class ProductComponent {
             color: product.price < 50 ? "red" : "green"
         };
     }
+    */
 }
