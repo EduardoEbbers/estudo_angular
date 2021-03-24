@@ -23,9 +23,23 @@ export class ProductComponent {
         return this.model.getProducts()[position];
     }
 
+    /*
     getClassesByPosition(position: number): string {
         let product = this.getProductByPosition(position);
         return "p-2 " + (product.price < 50 ? "bg-info" : "bg-warning");
+    }
+    */
+
+    getProducts(): Product[] {
+        return this.model.getProducts();
+    }
+
+    getProduct(key: number): Product {
+        return this.model.getProduct(key);
+    }
+
+    getProductCount(): number {
+        return this.getProducts().length;
     }
 
     /*
