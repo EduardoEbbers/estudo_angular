@@ -42,6 +42,10 @@ export class ProductComponent {
         return this.getProducts().length;
     }
 
+    getKey(index: number, product: Product) {
+        return product.id;
+    }
+
     /*
     fontSizeWithUnits: string = "30px";
     fontSizeWithoutUnits: string = "30";
