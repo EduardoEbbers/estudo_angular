@@ -106,3 +106,32 @@
     </table>
 </div>
 
+<!--
+    ngTemplateOutlet
+-->
+<ng-template #titleTemplate>
+    <h4 class="p-2 bg-success text-white">Conteudo Repetido</h4>
+</ng-template>
+
+<ng-template [ngTemplateOutlet]="titleTemplate"></ng-template>
+
+<div class="bg-info p-2 m-2 text-white">
+    Existe {{ getProductCount() }} produtos
+</div>
+
+<ng-template [ngTemplateOutlet]="titleTemplate"></ng-template>
+
+<!--
+    ngTemplateOutlet e ngTemplateOutletContext
+-->
+<ng-template #titleTemplate1 let-text="title">
+    <h4 class="p-2 bg-success text-white">{{ text }}</h4>
+</ng-template>
+
+<ng-template [ngTemplateOutlet]="titleTemplate1" [ngTemplateOutletContext]="{ title: 'Header' }"></ng-template>
+
+<div class="bg-info p-2 m-2 text-white">
+    Existe {{ getProductCount() }} produtos
+</div>
+
+<ng-template [ngTemplateOutlet]="titleTemplate1" [ngTemplateOutletContext]="{ title: 'Footer' }"></ng-template>
