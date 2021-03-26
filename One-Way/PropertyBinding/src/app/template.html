@@ -1,3 +1,145 @@
-<div class="bg-info text-white p-2 m-2">
-    Existe {{ model.getProducts().length }} produtos no modelo
+<!--
+  Exemplo Standard Property Binding
+    - [atributo]="expressao"
+    - abaixo setamos o atributo "value", que define o valor do nome 
+      do produto, aparecendo este dentro do elemento HTML "input"
+    - podemos fazer com qualquer atributo, como o atributo "class", 
+      de qualquer elemento HTML
+    
+  * a ? em model.getProduct(6)?.name siginifica que se o getProduct() 
+  for null, o atributo "value" vai ser seta para "None"
+-->
+
+<div class="form-group m-2">
+    <label>Nome:</label>
+    <input class="form-control"
+           [value]="model.getProduct(1)?.name || 'None'" />
+</div>
+
+<!--
+  Exemplo String Interpolation Binding
+    - {{ expressao }}
+    - é um standard property binding especial que usa uma expressao 
+      dentro de chaves duplas {{}}
+    - abaixo mostra a diferença entre setar o atributo "textContent", 
+      que define o valor do nome do produto, aparecendo este dentro do 
+      elemento HTML <div> e setar o valor do nome do produto com o 
+      string interpolation binding
+-->
+
+<div [ngClass]="'text-white m-2 p-2 ' + getClass()"
+     [textContent]="model.getProduct(1)?.name || 'None'">
+</div>
+
+<div [ngClass]="'text-white m-2 p-2 ' + getClass()">
+    {{ model.getProduct(1)?.name || 'None' }}
+</div>
+
+<!--
+  Exemplo Attribute Binding
+    - [attr.alvo]="expressao"
+    - quando o elemento HTML não possui propriedades, usa-se a palavra
+      "attr.alvo"
+    - abaixo mostra uma tabela com 5 divisões definidos dentro da tag 
+      <th> e setamos na tag <td> para que o nome do produto possua o 
+      tamanho de 5 divisões, setando o binding [attr.colSpan] atraves 
+      da expressão que fornece a quantidade de produtos
+-->
+
+<table class="table table-bordered table-striped table-sm mt-2">
+    <tr>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>4</th>
+        <th>5</th>
+    </tr>
+    <tr>
+        <td [attr.colSpan]="model.getProducts().length">
+            {{ model.getProduct(1).name || 'None' }}
+        </td>
+    </tr>
+</table>
+
+<!--
+  Exemplo Class Binding
+    - existe 3 tipos de class binding:
+      - standard property binding
+        - seta todas as classes de elementos HTML usando um metodo
+          ou propriedade do component.ts, do qua que retorna uma string
+        - [class]="expressao"
+      - class binding especial
+        - seta uma classe individualmente usando uma expressão booleana
+          que retorne true, possuindo maior controle
+        - [class.myClass]="expressao"
+      - ngClass Directive
+        - [ngClass]="map" (Explicação na seção DirectiveBinding)
+    - abaixo setamos o atributo "class" e depois "class.myClass" 
+      (representado por "class.bg-primary", por exemplo), que define 
+      caracteristicas CSS para este elemento HTML atraves de uma metodo 
+      ou propriedade que retorna uma string (no caso de [class]) e de 
+      uma expressao booleana que retorna true (no caso de [class.myClass])
+-->
+
+<div class="m-2">
+    <div [class]="getClasses(1)">
+        O primeiro produto é {{ model.getProduct(1).name }}
+    </div>
+    <div [class]="getClasses(2)">
+        O segundo produto é {{ model.getProduct(2).name }}
+    </div>
+</div>
+
+<div class="m-2">
+    <div class="p-2" 
+         [class.bg-primary]="model.getProduct(1).price < 50" 
+         [class.bg-secondary]="model.getProduct(1).price >= 50">
+        O primeiro produto é {{ model.getProduct(1).name }}
+    </div>
+    <div class="p-2" 
+         [class.bg-primary]="model.getProduct(2).price < 50" 
+         [class.bg-secondary]="model.getProduct(2).price >= 50">
+        O segundo produto é {{ model.getProduct(2).name }}
+    </div>
+</div>
+
+<!--
+  Exemplo Style Binding
+    - existe 3 tipos de style binding:
+      - standard property binding
+        - seta uma simples propriedade "style" de elementos HTML 
+          usando uma propriedade do component.ts que retorna uma 
+          string
+        - deve-se usar unidades (px)
+        - [style.myStyle]="expressao"
+      - style binding especial
+        - seta uma simples propriedade "style" de elementos HTML
+          usando uma propriedade do component.ts que retorna uma
+          string
+        - nao deve usar unidades, pois o atributo do elemento HTML
+          ja vai setar diretamente no template.html
+        - [style.myStyle.units]="expressao"
+      - ngClass Directive
+        - [ngStyle]="map" (Explicação na seção DirectiveBinding)
+    - abaixo setamos o atributo "style.fontSize" e depois "style.fontSize.px"
+      na tag <span>, que define caracteristicas CSS para este elemento HTML
+      atraves de uma propriedade ("fontSizeComUnidades" para o "style.fontSize"
+      e "fontSizeSemUnidades" para o "style.fontSize.px") e que retorna uma
+      string
+    
+  * diferente de [class], em [style] so serve para setar elementos individuais,
+    pois a propriedade "style" é read-only
+  * para setar multiplos elementos usa-se o Directive Binding [ngStyle]
+  * pode-se fazer atraves do formato JavaScript "fontSize" ou pelo formato
+    CSS "font-size"
+-->
+
+<div class="text-white m-2">
+    <div class="p-2 bg-warning">
+        O <span [style.font-size]="fontSizeComUnidades">primeiro</span> produto é {{ model.getProduct(1).name }}
+    </div>
+    <div class="bg-info p-2">
+        O <span [style.fontSize.px]="fontSizeSemUnidades">segundo</span> 
+        produto é {{ model.getProduct(2).name }}
+    </div>
 </div>
