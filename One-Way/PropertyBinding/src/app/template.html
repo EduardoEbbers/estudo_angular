@@ -5,13 +5,14 @@
       do produto, aparecendo este dentro do elemento HTML "input"
     - podemos fazer com qualquer atributo, como o atributo "class", 
       de qualquer elemento HTML
+        * para acessar o atributo dentro do elemento HTML, apertar Crtl + Espaço  
     
   * a ? em model.getProduct(6)?.name siginifica que se o getProduct() 
   for null, o atributo "value" vai ser seta para "None"
 -->
 
 <div class="form-group m-2">
-    <label>Nome:</label>
+    <label >Nome:</label>
     <input class="form-control"
            [value]="model.getProduct(1)?.name || 'None'" />
 </div>
