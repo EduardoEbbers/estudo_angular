@@ -1,4 +1,4 @@
-import { ProductComponent } from './../../../PropertyBinding/src/app/component';
+import { ProductComponent } from './component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
