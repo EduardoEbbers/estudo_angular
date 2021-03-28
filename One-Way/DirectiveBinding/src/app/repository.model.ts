@@ -10,7 +10,8 @@ export class Model {
         this.data = new DataSource();
         this.products = new Array<Product>();
 
-        this.data.getData().forEach(p => this.products.push(p));
+        this.data.getData()
+            .forEach(p => this.products.push(p));
     }
 
     getProducts(): Product[] {

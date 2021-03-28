@@ -1,3 +1,91 @@
-<div class="bg-info text-white p-2 m-2">
-    Existe {{ model.getProducts().length }} no modelo
+<!--
+  Exemplo Class Binding
+    - Outro tipo de class binding se dá através de uma Directive do Angular, 
+      chamado ngClass, sendo o mais flexivel, pois é baseado no tipo de dado
+      que se é retornado pela expressão:
+      - ngClass Directive
+        - tipos de dados que se retorna:
+            - String
+                - [ngClass]="string"
+            - Array
+                - [ngClass]="array"
+            - Object (map)
+                - Mais usado
+                - a expressao do metodo do qual retorna o objeto, 
+                  deve-se retornar true
+                - [ngClass]="map"
+    - abaixo fazemos o binding com a directive "ngClass", onde se avalia se cada
+      propriedade do objeto é true, e caso for true é setado aquela caracteristica,
+      ou seja:
+        - no primeiro exemplo:
+            {
+                "text-center bg-danger": true,
+                "bg-info": false
+            } 
+        - no segundo exemplo:
+            {
+                "text-center bg-danger": false,
+                "bg-info": true
+            }
+        - no terceiro exemplo é setado o object diretamente na directive no 
+          template.html, onde:
+            {
+                "bg-success": true,
+                "bg-info": false
+            }
+-->
+
+<div class="text-white">
+    <div class="p-2" 
+         [ngClass]="getClassMap(1)">
+        O primeiro produto é {{ model.getProduct(1).name }}
+    </div>
+    <div class="p-2" 
+         [ngClass]="getClassMap(2)">
+        O segundo produto é {{ model.getProduct(2).name }}
+    </div>
+    <div class="p-2" 
+         [ngClass]="{
+            'bg-success': model.getProduct(3).price < 50, 
+            'bg-info': model.getProduct(3).price >= 50 }">
+        O terceiro produto é {{ model.getProduct(3).name }}
+    </div>
+</div>
+
+<!--
+  Exemplo Style Binding
+    - Outro tipo de style binding se dá através de uma Directive do Angular, 
+      chamado ngStyle (semelhante ao ngClass), sendo o mais flexivel, pois seta multiplas propriedades
+      de style usando o retorno de um map object:
+      - ngStyle Directive
+        - tipo de dados que se retorna:
+            - Object (map)
+                - a expressao do metodo do qual retorna o objeto, 
+                  deve-se retornar true
+                - [ngStyle]="map"
+    - abaixo fazemos o binding com a directive "ngStyle", onde se seta cada
+      propriedade para mutiplos atributos ou se a propriedade do object for true,
+      ou seja:
+        - no primeiro exemplo:
+            {
+                fontSize: "30px",
+                "margin.px": 100,
+                color: "green"
+            } 
+        - no segundo exemplo:
+            {
+                fontSize: "30px",
+                "margin.px": 100,
+                color: "red"
+            }
+-->
+<div class="text-white m-2">
+    <div class="p-2 bg-warning">
+        O <span [ngStyle]="getStyleMap(1)">primeiro</span> 
+        produto é {{ model.getProduct(1).name }}
+    </div>
+    <div class="p-2 bg-info">
+        O <span [ngStyle]="getStyleMap(2)">segundo</span> 
+        produto é {{ model.getProduct(2).name }}
+    </div>
 </div>
