@@ -38,3 +38,254 @@
         Existe {{ getProductCount() }} produtos
     </div>
 </div>
+
+<!--
+
+-->
+
+
+<!--
+    Exemplo ngIf Directive
+        - usado para incluir fragmento de HTML quando a expressão for true
+        - *ngIf="expressao"
+        - ngIf adicona e remove elemento do HTML, se quisermos deixar o 
+          elemento no lugar e controlar a visibilidade, setar o atributo 
+          "hidden" para true ou setar o atributo style para none
+
+            hidden="true"
+            style="display:none"
+    
+    - no exemplo abaixo, ao salvar e rodar, ver o resultado
+        - depois, no browser, apertar F12 e em console
+
+            model.products.shift()
+            appRef.tick()
+        
+        - ver o resultado
+    
+    - no primeiro exemplo:
+        - antes a expressao no ngIf é avaliado como true pois possui mais 
+          do que 4 produtos, exibindo assim o bloco HTML
+        - depois de remover um produto a expressao no ngIf é avaliado como 
+          false pois possui, agora, 4 produtos
+    - no segundo exemplo:
+        - antes a expressao no ngIf é avaliado como false pois o primeiro produto
+          é Kayak, não exibindo assim o bloco HTML
+        - depois de remover um produto a expressao no ngIf é avaliado como true
+          pois o primeiro produto, agora, vai ser Lifejacket, exibindo assim o 
+          bloco HTML
+-->
+
+<div class="text-white m-2">
+    <div class="bg-info p-2 mt-1" *ngIf="getProductCount() > 4">
+        Existe mais do que 4 produtos no modelo
+    </div>
+
+    <div class="bg-info p-2 mt-1" *ngIf="getProductByPosition(0).name != 'Kayak'">
+        O primeiro produto não é um Kayak
+    </div>
+</div>
+
+<!--
+    Exemplo ngSwitch/ngSwitchCase/ngSwitchDefault Directive
+        - usado para selecionar um dos "ngSwitchCase" baseado no resultado 
+          da expressão do "ngSwitch", se nao houver nenhum case é selecionado 
+          o "ngSwitchDefault"
+        - [ngSwitch]="expressao"
+            *ngSwitchCase="expressaoCase"
+            *ngSwitchDefault
+        - a expressao do "ngSwitch" pode ser um number ou string
+        
+        - no exemplo abaixo, ao salvar e rodar, ver o resultado
+        - depois, no browser, apertar F12 e em console
+
+            model.products.shift()
+            appRef.tick()
+        
+        - ver o resultado
+    
+    - no primeiro exemplo:
+        - antes a expressao no binding [ngSwitch] é um number com o valor de 5
+          e neste caso existe um ngSwitchCase que possui o valor 5 na tag <span>, 
+          exibindo assim o bloco HTML
+        - depois de remover um produto a expressao no binding [ngSwitch] possui o 
+          valor de 4 e neste caso não existe um ngSwitchCase, e sera exibido o
+          conteudo do ngSwitchDefault
+        - se removermos mas 2 produtos, a expressao no binding [ngSwitch] possui o 
+          valor de 2 e neste caso existe um ngSwitchCase, e sera exibido o
+          conteudo do ngSwitchCase
+    - no segundo exemplo, usamos um valor literal string:
+        - onde usamos uma propriedade que esta no component chamado targetName 
+          atribuido para Kayak e usamos inline no ngSwitchCase usando aspas simples
+-->
+
+<div class="text-white m-2">
+    <div class="bg-info p-2 mt-1" [ngSwitch]="getProductCount()">
+        <span *ngSwitchCase="2">Existe 2 produtos</span>
+        <span *ngSwitchCase="5">Existe 5 produtos</span>
+        <span *ngSwitchDefault>Este é o default</span>
+    </div>
+
+    <!--
+        Analisar esta parte, não esta certo que esteja funcionando corretamente,
+        testar
+    -->
+    <!--
+    <div class="bg-info p-2 mt-1" [ngSwitch]="getProduct(2).name">
+        <span *ngSwitchCase="targetName">Kayak</span>
+        <span *ngSwitchCase="'Lifejacket'">Lifejacket</span>
+        <span *ngSwitchDefault>Este é o default</span>
+    </div>
+    -->
+</div>
+
+<!--
+    Exemplo ngFor Directive
+        - usado para repetir uma seção de conteudo para cada objeto de um array
+        - *ngFor="let item of array"
+            - a parte da esquerda let item é chamado de template variable, do qual
+              vai representar cada produto do array
+            - a parte da direita é o proprio array
+        - existe outros template variables no ngFor, são eles:
+            - index
+                - valor number, que atribui a posicao do atual objeto (baseado em 0)
+            - odd
+                - valor boolean, que retorna true se o atual objeto tem uma posição
+                  impar no data source
+            - even
+                - valor boolean, que retorna true se o atual objeto tem uma posição
+                  par no data source
+            - first
+                - valor boolean, que retorna true se o atual objeto for o primeiro
+                  no data source
+            - last
+                - valor boolean, que retorna true se o atual objeto for o ultimo
+                  no data source
+    - no exemplo abaixo temos que para cada item no array getProducts() mostramos
+      na tela o index destes produtos no array, o nome, a categoria e o preço
+        - ainda temos que se na sequencia (baseado em 0) for odd (impar) é setado
+        bg-primary e se for even (par) é setado bg-secondary
+        - ainda temos que o primeiro (first) ou o ultimo (last) elemento na tabela
+          é setado bg-danger
+        - ainda temos na ultima tag <td> que seta o preço do produto, uma mistura de
+          ngIf usando a template variable last, do qual o bloco vai ser removido se
+          ele for o ultimo produto do array 
+-->
+<!--
+    Adendo trackBy
+        - no ngFor se o data source for substituido por outro que contem diferentes
+          objetos que representa os mesmo dados, temos entao um problema:
+        - para exemplificar isso, criamos um metodo chamdo swapProduct() em
+          repository.model.ts que remove o primeiro item do array e o coloca no final
+          do array,
+            - entao no browser, na parte de desenvolvedor fazemos:
+
+                model.swapProduct()
+                appRef.tick()
+
+            - o problema aqui é porque como existe uma mudança neste nível, o angular
+              destroi e depois reconstroi todos os elementos HTML, consumindo um enorme
+              tempo de consumo na operação
+        
+        - para isso podemos usar o metodo trackBy do ngFor e setar um metodo chamado
+          de getKey() no component.ts para este exemplo do qual determina que dois 
+          objetos diferentes representam os mesmos dados
+        - usando o trackBy:getKey garantimos que o primeiro elemento ao ser removido e
+          adicionado no ultimo, por exemplo, ele realmente é o mesmo elemento
+            - para isso vamos fazer um teste:
+                - fazer esse teste sem e com o tracBy:getKey
+                - no browser, apertar F12, e em Elements, procurar pela linha que 
+                  possui o produto Kayak na tabela e na tag <td>Kayak</td> apertar 
+                  nos ... (ou clicar no botão direito) e selecionar Add Attribute, 
+                  setando:
+
+                    id="old"
+            
+                - depois no console fazer
+
+                    window.old
+
+                - vai mostrar
+
+                    <td id="old">Kayak</td>
+
+                - depois fazer
+
+                    model.swapProduct()
+                    appRef.tick()
+                    window.old
+
+                - temos a conclusao que:
+                    - sem o trackBy:getKey, quando digitamos window.old temos o
+                      o resultado undefined, significando que houve destruição e
+                      recriação
+                    - com o trackBy:getKey, quando digitamos window.old temos o
+                      o resultado <td id="old">Kayak</td>, significando que houve
+                      deslocamento
+-->
+
+<div class="m-2">
+    <table class="table table-bordered table-striped table-sm">
+        <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Preço</th>
+        </tr>
+        <tr *ngFor="let item of getProducts(); let i = index; let odd = odd; let even = even; let first = first; let last = last; trackBy:getKey" [class.bg-primary]="odd" [class.bg-secondary]="even" [class.bg-danger]="first || last">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td *ngIf="!last">{{ item.price }}</td>
+        </tr>
+    </table>
+</div>
+
+<!--
+    Exemplo ngTemplateOutlet Directive
+        - usado para repetir bloco de conteudo em um local especifico quando se
+          quer gerar o mesmo conteudo em diferentes locais, evitando duplicações
+        - no elemento ng-template atribuimos uma reference variable #titleTemplate,
+          do qual esta variavel pode ser usado em qualquer lugar do HTML
+    - no primeiro exemplo abaixo temos
+        - uma reference variable #titleTemplate do qual vai ser usado nos conteudos repetidos
+        - preenchimento do conteudo repetido pelo atributo [ngTemplateOutlet],
+          setando para titleTemplate
+    - no segundo exemplo abaixo forncemos alguns dados, entao:
+        - temos um template variable let-text="title", do qual usamos dentro de um
+          interpolation binding {{ text }}
+        - depois preenchemos com algum dado com a atribuição atributo
+          [ngTemplateOutletContext]="{title: 'Header'}"
+-->
+
+<div class="text-white">
+    <ng-template #titleTemplate>
+        <h4 class="p-2 bg-success">
+            Conteudo Repetido
+        </h4>
+    </ng-template>
+    
+    <ng-template [ngTemplateOutlet]="titleTemplate"></ng-template>
+    
+    <div class="bg-info p-2 m-2 text-white">
+        Existe {{ getProductCount() }} produtos
+    </div>
+    
+    <ng-template [ngTemplateOutlet]="titleTemplate"></ng-template>
+</div>
+
+<div class="text-white">
+    <ng-template #titleTemplate1 let-text="title">
+        <h4 class="p-2 bg-warning text-white">
+            {{ text }}
+        </h4>
+    </ng-template>
+    
+    <ng-template [ngTemplateOutlet]="titleTemplate1" [ngTemplateOutletContext]="{title: 'Header'}"></ng-template>
+    
+    <div class="bg-info p-2 m-2 text-white">
+        Existe {{ getProductCount() }} produtos
+    </div>
+    
+    <ng-template [ngTemplateOutlet]="titleTemplate1" [ngTemplateOutletContext]="{title: 'Footer'}"></ng-template>
+</div>
+
