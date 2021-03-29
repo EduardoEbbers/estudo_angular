@@ -1,8 +1,40 @@
+<!--
+    - O data binding atualiza automaticamente qdo um valor da propriedade
+      é mudado e para demonstrar estes exemplos temos que simular uma 
+      atualização ou mudança
+    - Quando o aplicativo é iniciado (bootstrap), angular cria o objeto
+      ApplicationRef que representa a aplicação
+    - dentro do constructor a exposicao dos objetos ApplicationRef e Model
+      para que possa ser manipulado no console JavaScript do browser 
+      (apertando F12 no browser, para acessar a ferramenta do desenvolvedor)
+    - no browser apertar F12 e ir em console e fazer duas coisas:
+        1 - excluir o primeiro item do array products, usando a função shift() que
+          exclui o primeiro item e retorna este item excluido    
+        
+            model.products.shift()
+    
+        2 - processar a mudança, usando a funcao tick() no ApplicationRef 
+          (variavel appRef) do qual olha para a aplicação e para as expressões
+          do data binding e processa a mudança, ou seja, um objeto objeto foi
+          do model e agora estamos atualizando os novos valores na tela
+
+    - no exemplo se avalia através da funcao getClassesByPosition(position) se o
+      preço do produto é menor que 50, se for retorna bg-danger, se não for retorna
+      bg-success
+-->
+
+
 <div class="text-white m-2">
     <div [ngClass]="getClassesByPosition(0)">
         O primeiro produto é {{ getProductByPosition(0).name }}
     </div>
     <div [ngClass]="getClassesByPosition(1)">
         O segundo produto é {{ getProductByPosition(1).name }}
+    </div>
+</div>
+
+<div class="text-white m-2">
+    <div class="bg-info p-2">
+        Existe {{ getProductCount() }} produtos
     </div>
 </div>

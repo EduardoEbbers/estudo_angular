@@ -9,6 +9,8 @@ import { ApplicationRef, Component } from "@angular/core";
 export class ProductComponent {
     model: Model = new Model();
 
+    targetName: string = "Kayak";
+
     constructor(ref: ApplicationRef) {
         (<any>window).appRef = ref;
         (<any>window).model = this.model;
@@ -23,12 +25,15 @@ export class ProductComponent {
         return "p-2 " + (product.price < 50 ? "bg-danger" : "bg-success");
     }
 
-    getClass(): string {
-        return this.model.getProducts().length == 5 ? "bg-info" : "bg-warning";
+    getProducts(): Product[] {
+        return this.model.getProducts();
     }
 
-    getClasses(key: number): string {
-        let product = this.model.getProduct(key);
-        return "p-2 " + (product.price < 50 ? "bg-danger" : "bg-warning");
+    getProduct(key: number): Product {
+        return this.model.getProduct(key);
+    }
+
+    getProductCount(): number {
+        return this.getProducts().length;
     }
 }
