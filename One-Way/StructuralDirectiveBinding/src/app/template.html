@@ -1,0 +1,8 @@
+<div class="text-white m-2">
+    <div [ngClass]="getClassesByPosition(0)">
+        O primeiro produto é {{ getProductByPosition(0).name }}
+    </div>
+    <div [ngClass]="getClassesByPosition(1)">
+        O segundo produto é {{ getProductByPosition(1).name }}
+    </div>
+</div>

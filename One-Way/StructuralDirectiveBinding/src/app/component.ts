@@ -1,5 +1,6 @@
+import { Product } from './product.model';
 import { Model } from './repository.model';
-import { Component } from "@angular/core";
+import { ApplicationRef, Component } from "@angular/core";
 
 @Component({
     selector: "app",
@@ -8,8 +9,19 @@ import { Component } from "@angular/core";
 export class ProductComponent {
     model: Model = new Model();
 
-    fontSizeComUnidades: string = "30px";
-    fontSizeSemUnidades: string = "30";
+    constructor(ref: ApplicationRef) {
+        (<any>window).appRef = ref;
+        (<any>window).model = this.model;
+    }
+    
+    getProductByPosition(position: number): Product {
+        return this.model.getProducts()[position];
+    }
+
+    getClassesByPosition(position: number): string {
+        let product = this.getProductByPosition(position);
+        return "p-2 " + (product.price < 50 ? "bg-danger" : "bg-success");
+    }
 
     getClass(): string {
         return this.model.getProducts().length == 5 ? "bg-info" : "bg-warning";
