@@ -39,6 +39,15 @@
 </div>
 
 <!--
+    - Alguns directives usam micro-templates directives, como ngIf, ngFor 
+      ou aninhado como ngSwitch
+    - usa-se o shorthand * antes do nome da directive
+        - ex.: *ngIf
+    - directives que usa micro-templates sao conhecidas como Structural 
+      Directives 
+-->
+
+<!--
     Exemplo ngIf Directive
         - usado para incluir fragmento de HTML quando a expressão for true
         - *ngIf="expressao"
@@ -83,6 +92,20 @@
 </div>
 
 <!--
+    Micro-Template ngIf Directive
+        - exemplo de micro-template usando ngIf
+-->
+
+<div class="text-white m-2">
+  <ng-template ngIf="getProductCount() > 4">
+    <div class="bg-info p-2 mt-1" 
+       *ngIf="getProductCount() > 4">
+      Micro-Template ngIF - Existe mais do que 4 produtos no modelo
+    </div>
+  </ng-template>
+</div>
+
+<!--
     Exemplo ngSwitch/ngSwitchCase/ngSwitchDefault Directive
         - usado para selecionar um dos "ngSwitchCase" baseado no resultado 
           da expressão do "ngSwitch", se nao houver nenhum case é selecionado 
@@ -119,9 +142,15 @@
 <div class="text-white m-2">
     <div class="bg-info p-2 mt-1" 
          [ngSwitch]="getProductCount()">
-        <span *ngSwitchCase="2">Existe 2 produtos</span>
-        <span *ngSwitchCase="5">Existe 5 produtos</span>
-        <span *ngSwitchDefault>Este é o default</span>
+        <ng-template ngSwitchCase="2">
+          <span>Micro-Template ngSwitchCase - Existe 2 produtos</span>
+        </ng-template>
+        <ng-template ngSwitchCase="5">
+          <span>Micro-Template ngSwitchCase - Existe 5 produtos</span>
+        </ng-template>
+        <ng-template ngSwitchDefault>
+          <span>Micro-Template ngSwitchDefault - Este é o default</span>
+        </ng-template>
     </div>
 
     <!--
@@ -135,6 +164,19 @@
         <span *ngSwitchDefault>Este é o default</span>
     </div>
     -->
+</div>
+
+<!--
+    Micro-Template ngSwitch/ngSwitchCase/ngSwitchDefault Directive
+-->
+
+<div class="text-white m-2">
+  <div class="bg-info p-2 mt-1" 
+       [ngSwitch]="getProductCount()">
+      <span *ngSwitchCase="2">Existe 2 produtos</span>
+      <span *ngSwitchCase="5">Existe 5 produtos</span>
+      <span *ngSwitchDefault>Este é o default</span>
+  </div>
 </div>
 
 <!--
@@ -256,6 +298,41 @@
 </div>
 
 <!--
+    Micro-Template ngFor
+      - no micro-template ngFor, temos:
+        - template variable feito assim:  
+          - let-name_template_variable
+        - ngFor e [ngForOf] é necessario isso
+-->
+
+<div class="m-2">
+  <table class="table table-bordered table-striped table-sm">
+      <tr>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+      </tr>
+      <ng-template ngFor 
+                   let-item 
+                   [ngForOf]="getProducts()" 
+                   let-i = "index" 
+                   let-odd = "odd"
+                   let-even = "even"
+                   let-first = "first"
+                   let-last = "last">
+        <tr [class.bg-primary]="odd" 
+            [class.bg-secondary]="even"
+            [class.bg-danger]="first || last">
+          <td>Micro-Template - ngFor {{ i + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.category }}</td>
+          <td *ngIf="!last">{{ item.price }}</td>
+        </tr>
+      </ng-template>
+  </table>
+</div>
+
+<!--
     Exemplo ngTemplateOutlet Directive
         - usado para repetir bloco de conteudo em um local especifico quando
           se quer gerar o mesmo conteudo em diferentes locais, evitando 
@@ -310,3 +387,7 @@
     <ng-template [ngTemplateOutlet]="titleTemplate1" 
                  [ngTemplateOutletContext]="{title: 'Footer'}"></ng-template>
 </div>
+
+<!--
+  Falta a explicação sobre as restrições do One-Way Data Binding
+-->
