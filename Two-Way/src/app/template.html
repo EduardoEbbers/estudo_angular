@@ -1,0 +1,98 @@
+<!--
+    Two-Way Data Binding
+        - pode-se combinar os dois tipos de binding para criar um fluxo de
+          dois caminhos de dados permitindo que o HTML responda qdo o modelo
+          da aplicacao muda e permitindo que a aplicacao responda qdo o elemento
+          emite um evento
+        - ou seja, em two-way data binding temos o data binding e o event binding
+
+    - no exemplo abaixo temos
+        - cada elemento input tem um property binding e um event binding
+        - o event binding do input atualiza a propriedade selectedProduct no
+          component.ts; ja o property binding pega o valor da variavel
+          selectedProduct para a propriedade value do elemento input
+        - o resultado é que os dois elementos inputs sao sincronizados, e
+          editando um causa a atualizacao do outro, atualizando tbm o string
+          interpolation binding e muda tbm a cor da linha em que esta o produto
+-->
+
+<div class="m-2">
+    <div class="bg-info text-white p-2">
+        Produto Selecionado: {{ selectedProduct || '(None)' }}
+    </div>
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+        </tr>
+        <tr *ngFor="let item of getProducts(); 
+                    let i = index" 
+            [class.bg-info]="getSelected(item)">
+            <td (mouseover)="selectedProduct=item.name">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price }}</td>
+        </tr>
+    </table>
+    <div class="form-group">
+        <label>Nome do Produto</label>
+        <input class="form-control"
+               (input)="selectedProduct=$event.target.value"
+               [value]="selectedProduct || ''" />
+    </div>
+    <div class="form-group">
+        <label>Nome do Produto</label>
+        <input class="form-control"
+               (input)="selectedProduct=$event.target.value"
+               [value]="selectedProduct || ''" />
+    </div>
+</div>
+
+<!--
+    ngModel Directive
+        - é usado para simplificar o two-way directive, assim nao precisa
+          aplicar um event e um property binding para o mesmo elemento
+        - o ngModel usa uma combinacao de property e event bindings
+        - para two-way, usa-se a directive ngModel dentro do chamado
+          banana-in-box [(ngModel)]
+        - qdo o conteudo do elemento input muda, será atualizado o valor da
+          propriedade selectedProduct; qdo o valor da propriedade selectedProduct
+          muda, sera atualizado o valor do conteudo do elemento input
+
+    - para o exemplo abaixo é necessario ir na pasta app e acessar app.module.ts
+      e na secao "imports" deve-se importar a biblioteca "FormsModule"
+-->
+
+<div class="m-2">
+    <div class="bg-info text-white p-2">
+        Produto Selecionado: {{ selectedProduct || '(None)' }}
+    </div>
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+        </tr>
+        <tr *ngFor="let item of getProducts(); 
+                    let i = index" 
+            [class.bg-info]="getSelected(item)">
+            <td (mouseover)="selectedProduct=item.name">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price }}</td>
+        </tr>
+    </table>
+    <div class="form-group">
+        <label>Nome do Produto</label>
+        <input class="form-control" 
+               [(ngModel)]="selectedProduct" />
+    </div>
+    <div class="form-group">
+        <label>Nome do Produto</label>
+        <input class="form-control"
+               [(ngModel)]="selectedProduct" />
+    </div>
+</div>
