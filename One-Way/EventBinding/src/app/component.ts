@@ -9,7 +9,7 @@ import { Component } from "@angular/core";
 export class ProductComponent {
     model: Model = new Model();
     
-    selectedProduct: Product;
+    selectedProduct: string;
 
     getProducts(): Product[] {
         return this.model.getProducts();
@@ -17,5 +17,9 @@ export class ProductComponent {
 
     getProduct(key: number): Product {
         return this.model.getProduct(key);
+    }
+
+    getSelected(product: Product): boolean {
+        return product.name == this.selectedProduct;
     }
 }

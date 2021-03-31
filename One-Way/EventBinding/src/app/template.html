@@ -1,4 +1,24 @@
+<!--
+    Event Binding
+        - é usado para enviar do elemento host para a aplicacao
+        - usa-se () para representar event binding
+        - o event binding pode fazer mudancas no estado da aplicacao e pode
+          conter operadores de atribuicao como "="
+        - no exemplo abaixo temos
+            - um event binding chamado "mouseover" em que ao passar o mouse
+              por cima do index, é enviado do elemento host para a aplicacao
+              a informacao do nome do produto em "selectedProduct=item.name", sendo armazenado na variavel
+              selectedProduct
+            - para mostrar isso em tela, temos um string interpolation binding
+              do qual se tem o binding da aplicacao para o elemento host
+              representado pelo selectedProduct, ou seja, existe uma mudança
+              cada vez que o mouse passa por cima dos indexes ao ser atualizado
+-->
+
 <div class="m-2">
+    <div class="bg-info text-white p-2">
+        Produto Selecionado: {{ selectedProduct || '(None)' }}
+    </div>
     <table class="table table-bordered table-sm">
         <tr>
             <th></th>
@@ -6,11 +26,159 @@
             <th>Category</th>
             <th>Price</th>
         </tr>
-        <tr *ngFor="let item of getProducts(); let i = index">
-            <td>{{ i + 1 }}</td>
+        <tr *ngFor="let item of getProducts(); 
+                    let i = index" 
+            [class.bg-info]="getSelected(item)">
+            <td (mouseover)="selectedProduct=item.name">{{ i + 1 }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.category }}</td>
             <td>{{ item.price }}</td>
         </tr>
     </table>
 </div>
+
+<!--
+    No exemplo abaixo temos:
+        - fizemos um metodo em "component.ts" chamado "getSelected()" que
+          retorna um boolean comparando se o nome do produto ao passar o mouse
+          por cima do index enviado e armazenado em selectedProduct é igual ao
+          nome do item do data source
+            - se for true, é pintado com bg-info a linha do produto selecionado
+        
+        - e explicacao seria, ao passar o mouse por cima do index do produto
+          Kayak, por exemplo, o nome do item é disparado o event binding,
+          armazenando a informacao na variavel selectectProduct
+          - entao avalia-se atraves do metodo "getSelected()" se o nome do
+            produto da linha selecionada é o nome do produto que esta no data
+            source atraves do data binding feita pelo "*ngFor"
+-->
+
+<div class="m-2">
+    <div class="bg-info text-white p-2">
+        Produto Selecionado: {{ selectedProduct || '(None)' }}
+    </div>
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+        </tr>
+        <tr *ngFor="let item of getProducts(); 
+                    let i = index"
+            [class.bg-info]="getSelected(item)">
+            <td (mouseover)="selectedProduct=item.name">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price }}</td>
+        </tr>
+    </table>
+</div>
+
+<!--
+    - Event Binding pode tbm ser usado para introduzir novos dados dentro
+      da aplicacao
+    - existe varios tipos de objetos de event para varias categorias de eventos
+      como mouse keyboard, form events, etc...
+    - todos os eventos compartilham de 3 propriedades que sera atribuido para
+      uma template variable chamado "$event", sao eles:
+        - $event.type
+            - retorna um string que identifica o tipo de evento que foi
+              disparado
+        - $event.target
+            - retorna o objeto que representa o elemento HTML no DOM do evento
+              que foi disparado
+        - $event.timeStamp
+            - retorna um numero que contem o tempo que o evento foi disparado,
+              expresso em milessegundos desde 01/01/1970
+
+    - no exemplo abaixo, ao digitar algo no input, pegamos este valor que é
+      representado por $event.target.value e é atribuido para a variavel
+      selectedProduct
+        - ao ser atribuido a variavel selectedProduct, é pintado bg-info
+          da linha que o produto é representado e mostrado no string
+          interpolation binding
+-->
+
+<div class="m-2">
+    <div class="bg-info text-white p-2">
+        Produto Selecionado: {{ selectedProduct || '(None)' }}
+    </div>
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+        </tr>
+        <tr *ngFor="let item of getProducts(); 
+                    let i = index"
+            [class.bg-info]="getSelected(item)">
+            <td (mouseover)="selectedProduct=item.name">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price }}</td>
+        </tr>
+    </table>
+    <div class="form-group">
+        <label>Name:</label>
+        <input class="form-control" 
+               (input)="selectedProduct=$event.target.value" />
+    </div>
+</div>
+
+<!--
+    Neste exemplo estamos usando template reference variable que é um tipo de
+    template variable que pode ser usado para refereciar elementos dentro do
+    template
+    - usa-se #
+    - entao aqui, o template reference variable esta no elemento input,
+      referenciando este elemento, e agora podemos usar este template reference
+      variable em qualquer lugar do template como no string interpolationg
+      binding, na tag <tr> no event binding (mouseover), no class binding, outros
+      usando o value, como "product.value"
+    - ou seja, qdo eu passar o mouse por cima da linha do produto, vai ser pintado
+      esta linha e vai ser atribuido dentro do input este valor do nome do produto
+-->
+
+<div class="m-2">
+    <div class="bg-info text-white p-2">
+        Produto Selecionado: {{ product.value || '(None)' }}
+    </div>
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+        </tr>
+        <tr *ngFor="let item of getProducts(); 
+                    let i = index"
+            (mouseover)="product.value=item.name"
+            [class.bg-info]="product.value==item.name">
+            <td (mouseover)="selectedProduct=item.name">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.price }}</td>
+        </tr>
+    </table>
+    <div class="form-group">
+        <label>Name:</label>
+        <input class="form-control"
+               #product
+               (input)="false" />
+    </div>
+</div>
+
+<!--
+    Podemos usar um evento dentro do elemento input, do qual podemos escrever
+    dentro do elemento e apos apertar "enter" o evento é disparado, descrito
+    abaixo:
+
+        <div class="form-group">
+            <label>Name:</label>
+            <input class="form-control"
+                   #product
+                  (keyup.enter)="selectedProduct=product.value" />
+        </div>
+-->
