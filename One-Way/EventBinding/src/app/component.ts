@@ -15,10 +15,6 @@ export class ProductComponent {
         return this.model.getProducts();
     }
 
-    getProduct(key: number): Product {
-        return this.model.getProduct(key);
-    }
-
     getSelected(product: Product): boolean {
         return product.name == this.selectedProduct;
     }
